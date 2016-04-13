@@ -10,13 +10,14 @@
 // The beta coefficient of the thermistor (usually 3000-4000)
 #define BCOEFFICIENT 4194
 // the value of the 'other' resistor
-#define SERIESRESISTOR 10000    
+#define SERIESRESISTOR 22000    
  
 int samples[NUMSAMPLES];
  
 void setup(void) {
-  Serial.begin(9600);
+  Serial.begin(57600);
   analogReference(EXTERNAL);
+  pinMode(4, OUTPUT);
 }
  
 void loop(void) {
@@ -24,12 +25,15 @@ void loop(void) {
   float average;
  
   // take N samples in a row, with a slight delay
+  digitalWrite(4, HIGH);
+  delay(10);
   for (i=0; i< NUMSAMPLES; i++) {
    samples[i] = analogRead(THERMISTORPIN);
    delay(10);
   }
+ digitalWrite(4, LOW);
  
-  // average all the samples out
+ // average all the samples out
   average = 0;
   for (i=0; i< NUMSAMPLES; i++) {
      average += samples[i];
